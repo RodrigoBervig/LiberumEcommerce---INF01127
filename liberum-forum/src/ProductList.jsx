@@ -30,7 +30,6 @@ class ProductList extends Component {
       },
     ],
     filterText: "",
-    showingProducts: [],
   };
 
   componentDidMount = async () => {
@@ -41,14 +40,12 @@ class ProductList extends Component {
     var prods = await response.json();
 
     prods = prods.map((p) => {
-      paux = p;
+      let paux = p;
       paux.quantity = 0;
       return paux;
     });
 
     this.setState({ products: prods });
-
-    this.setState({ showingProducts: this.state.products });
   };
 
   render() {
@@ -77,7 +74,7 @@ class ProductList extends Component {
         </div>
 
         <div className="row">
-          {this.state.showingProducts.map((product) => (
+          {this.state.products.map((product) => (
             <Product
               key={product.id}
               product={product}
@@ -115,11 +112,23 @@ class ProductList extends Component {
   };
 
   handleFilterClick = () => {
-    let allProduct = [...this.state.products].filter((product) =>
-      product.description.includes(this.state.filterText)
-    );
-    console.log(allProduct);
-    this.setState({ showingProducts: allProduct });
+
+    let url = `http://localhost:8080/products/search/${this.state.filterText}`
+
+    var response = await fetch(url, {
+      method: "GET",
+    });
+
+    var prods = await response.json();
+
+    prods = prods.map((p) => {
+      let paux = p;
+      paux.quantity = 0;
+      return paux;
+    });
+
+
+    this.setState({ products: prods });
   };
 }
 
