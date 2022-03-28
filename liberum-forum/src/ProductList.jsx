@@ -33,7 +33,21 @@ class ProductList extends Component {
     showingProducts: [],
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    var response = await fetch("http://localhost:8080/products", {
+      method: "GET",
+    });
+
+    var prods = await response.json();
+
+    prods = prods.map((p) => {
+      paux = p;
+      paux.quantity = 0;
+      return paux;
+    });
+
+    this.setState({ products: prods });
+
     this.setState({ showingProducts: this.state.products });
   };
 
