@@ -111,9 +111,8 @@ class ProductList extends Component {
     console.log(this.state.filterText);
   };
 
-  handleFilterClick = () => {
-
-    let url = `http://localhost:8080/products/search/${this.state.filterText}`
+  handleFilterClick = async () => {
+    let url = `http://localhost:8080/products/search/${this.state.filterText}`;
 
     var response = await fetch(url, {
       method: "GET",
@@ -126,7 +125,6 @@ class ProductList extends Component {
       paux.quantity = 0;
       return paux;
     });
-
 
     this.setState({ products: prods });
   };
