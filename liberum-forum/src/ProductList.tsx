@@ -4,14 +4,12 @@ import apiAxios from "./apiClient";
 import ProductCard, { Product } from "./ProductCard";
 
 type ProductsListState = {
-  tag: "products";
   filter: string;
   products: Product[];
 };
 
-const ProductsList = () => {
+const ProductsPage = () => {
   const [state, setState] = useState<ProductsListState>({
-    tag: "products",
     filter: "",
     products: PRODUCTS_PLACEHOLDER,
   });
@@ -22,7 +20,6 @@ const ProductsList = () => {
     apiAxios.get(`products`).then((resp) => {
       console.log(resp);
       setState({
-        tag: "products",
         filter: "",
         products: resp.data.length > 0 ? normalizeProducts(resp.data) : [],
       });
@@ -30,7 +27,7 @@ const ProductsList = () => {
   }, []);
 
   return (
-    <div className="container py-3 px-5">
+    <>
       <h3 className="float-left p-1">Lista de Produtos</h3>
       <div className="input-group my-3">
         <input
@@ -89,7 +86,7 @@ const ProductsList = () => {
           ))
         )}
       </div>
-    </div>
+    </>
   );
 };
 
@@ -133,4 +130,4 @@ const PRODUCTS_PLACEHOLDER: Product[] = [
   },
 ];
 
-export default ProductsList;
+export default ProductsPage;
