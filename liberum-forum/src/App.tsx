@@ -7,7 +7,6 @@ const App = () => {
     <React.Fragment>
       <NavBar />
       <ProductsList />
-      {/* <MainContent></MainContent> */}
     </React.Fragment>
   );
 };

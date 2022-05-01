@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import axios from "axios";
+import apiAxios from "./apiClient";
 import ProductCard, { Product } from "./ProductCard";
 
 type ProductsListState = {
@@ -12,74 +12,57 @@ type ProductsListState = {
 const ProductsList = () => {
   const [state, setState] = useState<ProductsListState>({
     tag: "products",
-    products: PRODUCTS_PLACEHOLDER,
     filter: "",
+    products: PRODUCTS_PLACEHOLDER,
   });
 
   console.log(state);
 
   useEffect(function loadProducts() {
-    axios
-      .create({
-        baseURL: "http://localhost:8080/",
-      })
-      .get(`products`)
-      .then((resp) =>
-        // var response = await fetch("http://localhost:8080/products", {
-        //   method: "GET",
-        // });
-        // var prods = await response.json();
-        // prods = prods.map((p) => {
-        //   let paux = p;
-        //   paux.quantity = 0;
-        //   return paux;
-        // });
-        // setProducts({ prods });
-        setState({
-          tag: "products",
-          filter: "",
-          products: normalizeProducts(resp.data),
-        })
-      );
+    apiAxios.get(`products`).then((resp) => {
+      console.log(resp);
+      setState({
+        tag: "products",
+        filter: "",
+        products: resp.data.length > 0 ? normalizeProducts(resp.data) : [],
+      });
+    });
   }, []);
 
   return (
     <div className="container py-3 px-5">
       <h3 className="float-left p-1">Lista de Produtos</h3>
-      <>
-        <div className="input-group my-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Filtrar produtos"
-            aria-label="Filtrar produtos"
-            onChange={(ev) => setState({ ...state, filter: ev.target.value })}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={function handleFilterClick() {
-                axios
-                  .create({
-                    baseURL: "http://localhost:8080/",
-                  })
-                  .get(`products/search/${state.filter}`)
-                  .then((resp) => {
-                    setState({
-                      ...state,
-                      products: normalizeProducts(resp.data),
-                    });
-                  });
-              }}
-            >
-              Filtrar
-            </button>
-          </div>
+      <div className="input-group my-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Filtrar produtos"
+          aria-label="Filtrar produtos"
+          onChange={(ev) => setState({ ...state, filter: ev.target.value })}
+        />
+        <div className="input-group-append">
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={function handleFilterClick() {
+              apiAxios.get(`products/search/${state.filter}`).then((resp) => {
+                setState({
+                  ...state,
+                  products: normalizeProducts(resp.data),
+                });
+              });
+            }}
+          >
+            Filtrar
+          </button>
         </div>
+      </div>
 
-        <div className="row">
-          {state.products.map((prod) => (
+      <div className="row">
+        {state.products.length === 0 ? (
+          <div className="alert alert-primary">Nenhum produto cadastrado.</div>
+        ) : (
+          state.products.map((prod) => (
             <ProductCard
               key={prod.id}
               product={prod}
@@ -103,9 +86,9 @@ const ProductsList = () => {
                 Comprar
               </button>
             </ProductCard>
-          ))}
-        </div>
-      </>
+          ))
+        )}
+      </div>
     </div>
   );
 };
