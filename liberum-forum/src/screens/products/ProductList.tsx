@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import apiAxios from "./apiClient";
+import apiAxios from "../apiClient";
 import ProductCard, { Product } from "./ProductCard";
 
 type ProductsListState = {

@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import NavBar from "./NavBar";
-import ProductsPage from "./ProductList";
+import ProductsPage from "./screens/ProductList";
 
 const App = () => {
   return (
