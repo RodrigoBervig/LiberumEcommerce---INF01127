@@ -90,7 +90,7 @@ const RegisterProduct = () => {
               </div>
             ) : (
               <button
-                type="submit"
+                type="button"
                 className="btn btn-primary"
                 disabled={savingState === "loading" || !isProductValid}
                 onClick={() => {
