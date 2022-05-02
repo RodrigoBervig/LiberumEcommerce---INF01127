@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export type Product = {
   id: number;
@@ -21,7 +22,9 @@ const ProductCard = (props: {
     <div className="col-md-3">
       <div className="card m-2">
         <div className="card-body">
-          <div className="text-muted">#{product.id}</div>
+          <Link to={`produtos/${product.id}`}>
+            <div className="text-muted">#{product.id}</div>
+          </Link>
           <h5 className="pt-2 border-top">{product.name}</h5>
           <div>${product.price}</div>
         </div>

@@ -7,7 +7,9 @@ import {
 } from "react-router-dom";
 
 import NavBar from "./NavBar";
-import ProductsPage from "./screens/ProductList";
+import ProductDetails from "./screens/products/ProductDetails";
+import ProductsPage from "./screens/products/ProductList";
+import RegisterProduct from "./screens/products/RegisterProduct";
 
 const App = () => {
   return (
@@ -17,8 +19,13 @@ const App = () => {
         <div className="container py-3 px-5">
           <Switch>
             <Route exact={true} path="/" component={ProductsPage} />
+            <Route path="/produtos/:productId" component={ProductsPage}>
+              {({ match }) => (
+                <ProductDetails productId={match!.params.productId} />
+              )}
+            </Route>
             <Route path="/produtos" component={ProductsPage} />
-            <Route path="/cadastro-produto" component={FoobarPage} />
+            <Route path="/cadastro-produto" component={RegisterProduct} />
 
             <Redirect from="/" to="/" />
           </Switch>
@@ -26,10 +33,6 @@ const App = () => {
       </div>
     </Router>
   );
-};
-
-const FoobarPage = () => {
-  return <></>;
 };
 
 export default App;
